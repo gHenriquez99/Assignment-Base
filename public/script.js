@@ -13,31 +13,38 @@ async function windowActions() {
     // this adds eventListener on the searchBox 
     // anytime there is an input it updates 
     search.addEventListener('input', (event) => {
-        console.log('input', event.target.value);
-        target.innerHTML = "";
+        console.log('input', event.target.value); // logs the input so its easier to follow
+        target.innerHTML = ""; 
+        // this actually does the filtering. So right now it is just set to name
+        // we could add more filters if we wanted to like category
         const filtered = data.filter((record => record.name.toUpperCase().includes(search.value.toUpperCase())));
+        // for each filtered result, creates a new li containing the name, category and address
         filtered.forEach((item) => {
             const elem = document.createElement('li');
             elem.classList.add('list-item');
-            elem.innerText = item.name;
+            elem.innerText = item.name + "\n" + item.category + "\n" + item.address_line_1;
+            // appends the li into the ul
             target.append(elem);
         })
     })
 
     // this adds an eventListener on the form
     // specifically for when there is a submit
-    form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        target.innerHTML = "";
-        console.log('submit fired', search.value);
-        const filtered = data.filter((record => record.category.toUpperCase().includes(search.value.toUpperCase())));
-        filtered.forEach((item) => {
-            const elem = document.createElement('li');
-            elem.classList.add('list-item');
-            elem.innerText = item.name;
-            target.append(elem);
-        })
-    })
+    // ****IF YOU WANT THIS UNCOMMENT THE FUNCTION BELOW AND UNCOMMENT THE SUBMIT IN index.html
+    // BUT ITS KIND OF POINTLESS BECAUSE IT UPDATES ON EVERY INPUT ANYWAYS
+
+    // form.addEventListener('submit', async (event) => {
+    //     event.preventDefault();
+    //     target.innerHTML = "";
+    //     console.log('submit fired', search.value);
+    //     const filtered = data.filter((record => record.category.toUpperCase().includes(search.value.toUpperCase())));
+    //     filtered.forEach((item) => {
+    //         const elem = document.createElement('li');
+    //         elem.classList.add('list-item');
+    //         elem.innerText = item.name;
+    //         target.append(elem);
+    //     })
+    // })
 
 
 }
