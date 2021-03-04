@@ -1,46 +1,54 @@
-const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
+// async function that contains all the JS 
+async function windowActions() {
+    console.log('window loaded');
+    const endpoint = 'https://data.princegeorgescountymd.gov/resource/umjn-t2iz.json';
+    const form = document.querySelector('.userForm');
+    const search = document.querySelector('.search');
+    const target = document.querySelector('.target-ul');
 
-const establish = [];
+    const request = await fetch(endpoint);
+    const data = await request.json();
+    console.log(data);
 
-fetch(endpoint)
-  .then(blob => blob.json())
-  .then(data => establish.push(...data));
+    // this adds eventListener on the searchBox 
+    // anytime there is an input it updates 
+    search.addEventListener('input', (event) => {
+        console.log('input', event.target.value); // logs the input so its easier to follow
+        target.innerHTML = ""; 
+        // this actually does the filtering. So right now it is just set to name
+        // we could add more filters if we wanted to like category
+        const filtered = data.filter((record => record.name.toUpperCase().includes(search.value.toUpperCase())));
+        // for each filtered result, creates a new li containing the name, category and address
+        filtered.forEach((item) => {
+            const elem = document.createElement('li');
+            elem.classList.add('list-item');
+            elem.innerText = item.name + "\n" + item.category + "\n" + item.address_line_1;
+            // appends the li into the ul
+            target.append(elem);
+        })
+    })
+
+    // this adds an eventListener on the form
+    // specifically for when there is a submit
+    // ****IF YOU WANT THIS UNCOMMENT THE FUNCTION BELOW AND UNCOMMENT THE SUBMIT IN index.html
+    // BUT ITS KIND OF POINTLESS BECAUSE IT UPDATES ON EVERY INPUT ANYWAYS
+
+    // form.addEventListener('submit', async (event) => {
+    //     event.preventDefault();
+    //     target.innerHTML = "";
+    //     console.log('submit fired', search.value);
+    //     const filtered = data.filter((record => record.category.toUpperCase().includes(search.value.toUpperCase())));
+    //     filtered.forEach((item) => {
+    //         const elem = document.createElement('li');
+    //         elem.classList.add('list-item');
+    //         elem.innerText = item.name;
+    //         target.append(elem);
+    //     })
+    // })
 
 
-
-
-
-function findMatches(wordToMatch, establish) {
-  return establish.filter(place => {
-    // here we need to figure out if the city or state matches what was searched
-    const regex = new RegExp(wordToMatch, 'gi');
-    return place.name.match(regex) || place.city.match(regex)
-  });
 }
 
+// this actually runs the previous function 
+window.onload = windowActions;
 
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-}
-
-function displayMatches() {
-  const matchArray = findMatches(this.value, establish);
-  const html = matchArray.map(place => {
-    const regex = new RegExp(this.value, 'gi');
-    const cityName = place.city.replace(regex, `<span class="hl">${this.value}</span>`);
-    const stateName = place.name.replace(regex, `<span class="hl">${this.value}</span>`);
-    return `
-      <li>
-        <span class="pname">${cityName}, ${stateName}</span>
-        <span class="pcity">${numberWithCommas(place.city)}</span>
-      </li>
-    `;
-  }).join('');
-  suggestions.innerHTML = html;
-}
-
-const searchInput = document.querySelector('.search');
-const suggestions = document.querySelector('.suggestions');
-
-searchInput.addEventListener('change', displayMatches);
-searchInput.addEventListener('keyup', displayMatches);
