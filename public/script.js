@@ -14,18 +14,23 @@ async function windowActions() {
     // anytime there is an input it updates 
     search.addEventListener('input', (event) => {
         console.log('input', event.target.value); // logs the input so its easier to follow
-        target.innerHTML = ""; 
+        target.innerHTML = "";
         // this actually does the filtering. So right now it is just set to name
         // we could add more filters if we wanted to like category
-        const filtered = data.filter((record => record.name.toUpperCase().includes(search.value.toUpperCase())));
+        const filtered = data.filter((record => record.name.toUpperCase().includes(search.value.toUpperCase()) 
+            || record.category.toUpperCase().includes(search.value.toUpperCase())));
         // for each filtered result, creates a new li containing the name, category and address
         filtered.forEach((item) => {
             const elem = document.createElement('li');
             elem.classList.add('list-item');
-            elem.innerText = item.name + "\n" + item.category + "\n" + item.address_line_1;
+            elem.innerText = item.name + "\n" + item.category + "\n" + item.address_line_1 + "\n" + item.city + "\n" + item.zip;
             // appends the li into the ul
             target.append(elem);
         })
+        if(event.target.value === ""){
+            target.innerHTML ="";
+        }
+
     })
 
     // this adds an eventListener on the form
