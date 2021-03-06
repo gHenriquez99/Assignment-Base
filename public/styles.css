@@ -23,3 +23,7 @@ html {
   text-transform: capitalize;
   font-family: 'Arima Madurai', cursive;
 }
+
+header {
+  text-align: center;
+}
