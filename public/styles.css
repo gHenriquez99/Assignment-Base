@@ -1,20 +1,25 @@
 html {
   box-sizing: border-box;
-  background: #ebb85a;
-  font-family: 'helvetica neue';
+  background: #ee9889;
+  font-family: 'Arima Madurai', cursive;
   font-size: 20px;
   font-weight: 200;
 }
 
+.field {
+  font-family: 'Arima Madurai', cursive;
+}
+
 .target-ul li {
-  background:white;
+  background: linear-gradient(#e2ab64, #ebd2b2);
   list-style: none;
   border-bottom: 1px solid #D8D8D8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.14);
-  margin:0;
+  margin: 20px;
   padding:20px;
   transition:background 0.2s;
   display:flex;
   justify-content:space-between;
   text-transform: capitalize;
+  font-family: 'Arima Madurai', cursive;
 }
